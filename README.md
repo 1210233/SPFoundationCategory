@@ -15,7 +15,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 SPFoundationCategory is available through [SPM](Swift-Package-Manager). 
 　
+ 
 　
+ 
 Add SPFoundationCategory by your project dependency, In XCode:
 
 　Step 1, open your project and click menus by `File -> Swift Packages -> Add Package Dependency...`.
