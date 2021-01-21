@@ -29,33 +29,24 @@ Add SPFoundationCategory by your project dependency, In XCode:
 
 Add SPFoundationCategory by your `package dependency`, In File `Package.swift`:
 
-` let package = Package(name: "SomePackage",
-  
-                      platforms: [],
-                      
-                      products: [.library(name: "SomePackage",
-                      
-                                          targets: ["SomePackage"])],
-                                          
-                      dependencies: [
-                      
-                          // Dependencies declare other packages that this package depends on.
-                          
-                        .package(url: "https://github.com/1210233/SPFoundationCategory.git", from: Version(1, 0, 0)),
+    
+    let package = Package(name: "SomePackage",
+                          platforms: [],
+                          products: [.library(name: "SomePackage",
+                                              targets: ["SomePackage"])],  
+                          dependencies: [
+                              // Dependencies declare other packages that this package depends on.
+                            .package(url: "https://github.com/1210233/SPFoundationCategory.git", from: Version(1, 0, 0)),
+                          ],
+
+                          targets: [.target(name: "SomePackage",
+                                            dependencies: ["SPFoundationCategory"],
+                                            path: "Sources")
+                                    ]  
+                            )
                         
-                      ],
-                      
-                      targets: [.target(name: "SomePackage",
-                      
-                                        dependencies: ["SPFoundationCategory"],
-                                        
-                                        path: "Sources")
-                                        
-                                ]
-                                
-                        )
                         
-`
+
                         
 ## Author
 
