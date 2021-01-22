@@ -8,26 +8,27 @@
 import Foundation
 
 // MARK: - 增删操作
-extension Array {
+extension Array where Element: Equatable {
     public static
-    func += (lhs: inout Array<Element>, rhs: Element) where Element: Equatable {
+    func += (lhs: inout Self, rhs: Element) {
         if !lhs.contains(rhs) {
             lhs.append(rhs)
         }
     }
     public static
-    func -= (lhs: inout Array<Element>, rhs: Element) where Element: Equatable {
-        lhs.removeAll { (ele) -> Bool in
-            return (rhs == ele)
-        }
+    func -= (lhs: inout Self, rhs: Element) {
+        lhs.remove(rhs)
     }
     public static
-    func -= (lhs: inout Array<Element>, rhs: Array<Element>) where Element: Equatable {
-        lhs.remove(items: rhs)
+    func -= (lhs: inout Self, rhs: Self) {
+        lhs.remove(rhs)
     }
     
+    /// 删除指定的对象
+    /// - Parameter item: 指定对象
+    /// - Returns: 被删除的次数
     @discardableResult mutating public
-    func remove(_ item: Element) -> Int where Element: Equatable {
+    func remove(_ item: Element) -> Int {
         var n = 0
         self.removeAll { (ele) -> Bool in
             if (item == ele) {
@@ -40,8 +41,8 @@ extension Array {
     }
     
     @discardableResult mutating public
-    func remove(items: Array<Element>) -> Array<Element> where Element: Equatable {
-        var removed = Array<Element>()
+    func remove(_ items: Self) -> Self {
+        var removed: Self = []
         self.removeAll { (ele) -> Bool in
             if items.contains(ele) {
                 removed.append(ele)
@@ -50,6 +51,24 @@ extension Array {
             return false
         }
         return removed
+    }
+    
+    @discardableResult mutating public
+    func remove(firstAppear item: Element) -> Int? {
+        if let idx = self.firstIndex(of: item) {
+            self.remove(at: idx)
+            return idx
+        }
+        return nil
+    }
+    
+    @discardableResult mutating public
+    func remove(lastAppear item: Element) -> Int? {
+        if let idx = self.lastIndex(of: item) {
+            self.remove(at: idx)
+            return idx
+        }
+        return nil
     }
 }
 
@@ -74,9 +93,9 @@ extension Array {
 }
 
 // MARK: - 快捷访问
-extension Array {
+extension Array where Element: Equatable  {
     public
-    func nextObject(with object: Element?) -> Element? where Element: Equatable {
+    func nextObject(with object: Element?) -> Element? {
         if object == nil {
             return self.first
         }
@@ -89,7 +108,7 @@ extension Array {
     }
     
     public
-    func previousObject(with object: Element?) -> Element? where Element: Equatable {
+    func previousObject(with object: Element?) -> Element? {
         if object == nil {
             return self.first
         }
@@ -99,6 +118,19 @@ extension Array {
             }
         }
         return nil
+    }
+}
+
+// MARK: - 取子集
+extension Array {
+    func array(where predicate: (Element) -> Bool) -> Self {
+        var arr: Self = []
+        self.forEach { ele in
+            if predicate(ele) {
+                arr.append(ele)
+            }
+        }
+        return arr
     }
 }
 

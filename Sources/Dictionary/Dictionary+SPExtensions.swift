@@ -97,3 +97,40 @@ extension Dictionary {
         }
     }
 }
+
+// MARK: - 按条件删除对象
+extension Dictionary where Value: Equatable {
+    
+    @discardableResult public mutating
+    func remove(where handle: ((key: Key, value: Value), _ stop: inout Bool) -> Bool) -> [(Key, Value)] {
+        var arr: [(Key, Value)] = []
+        var stop = false
+        
+        for kv in self {
+            if handle(kv, &stop) {
+                arr.append(kv)
+            }
+            if stop {
+                break
+            }
+        }
+        for kv in arr {
+            self.removeValue(forKey: kv.0)
+        }
+        return arr
+    }
+    
+    public func removed(where handle: ((key: Key, value: Value), _ stop: inout Bool) -> Bool) -> Self {
+        var stop = false
+        var dic = self
+        for kv in self {
+            if handle(kv, &stop) {
+                dic.removeValue(forKey: kv.key)
+            }
+            if stop {
+                break
+            }
+        }
+        return dic
+    }
+}
