@@ -15,7 +15,7 @@ extension String {
     public
     var pinyin: String {
         get {
-            if let str = objc_getAssociatedObject(self, "sp_pinyin") as? String {
+            if let str = objc_getAssociatedObject(self, &sp_pinyinKey) as? String {
                 return str
             }
             
@@ -26,7 +26,7 @@ extension String {
                 mString.replaceOccurrences(of: " ", with: "", range: NSRange(location: 0, length: mString.length))
                 str = String(mString)
             }
-            objc_setAssociatedObject(self, "sp_pinyin", str, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+            objc_setAssociatedObject(self, &sp_pinyinKey, str, .OBJC_ASSOCIATION_COPY_NONATOMIC)
             return str
         }
     }
@@ -370,12 +370,12 @@ extension String {
     
     public
     var md5Sum: String {
-        if let v = objc_getAssociatedObject(self, "md5Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_md5SumKey) as? String {
             return v
         }
         if let data = self.data(using: .utf8) {
             let string = data.md5Sum
-            objc_setAssociatedObject(self, "md5Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+            objc_setAssociatedObject(self, &sp_md5SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
             return string
         } else {
             return ""
@@ -384,12 +384,12 @@ extension String {
     
     public
     var sha1Sum: String {
-        if let v = objc_getAssociatedObject(self, "sha1Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_sha1SumKey) as? String {
             return v
         }
         if let data = self.data(using: .utf8) {
             let string = data.sha1Sum
-            objc_setAssociatedObject(self, "sha1Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+            objc_setAssociatedObject(self, &sp_sha1SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
             return string
         } else {
             return ""
@@ -398,15 +398,25 @@ extension String {
     
     public
     var sha256Sum: String {
-        if let v = objc_getAssociatedObject(self, "sha256Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_sha256SumKey) as? String {
             return v
         }
         if let data = self.data(using: .utf8) {
             let string = data.sha256Sum
-            objc_setAssociatedObject(self, "sha256Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+            objc_setAssociatedObject(self, &sp_sha256SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
             return string
         } else {
             return ""
         }
+    }
+}
+
+
+extension String {
+    public static func ?? (string: String, default:  @autoclosure () -> String) -> String {
+        if string.isEmpty {
+            return `default`()
+        }
+        return string
     }
 }

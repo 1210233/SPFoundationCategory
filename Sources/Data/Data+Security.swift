@@ -14,31 +14,31 @@ import zlib
 extension Data {
     public
     var md5Sum: String {
-        if let v = objc_getAssociatedObject(self, "md5Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_md5SumKey) as? String {
             return v
         }
         let string = self.stringForSum(.md5)
-        objc_setAssociatedObject(self, "md5Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        objc_setAssociatedObject(self, &sp_md5SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         return string
     }
     
     public
     var sha1Sum: String {
-        if let v = objc_getAssociatedObject(self, "sha1Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_sha1SumKey) as? String {
             return v
         }
         let string = self.stringForSum(.sha1)
-        objc_setAssociatedObject(self, "sha1Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        objc_setAssociatedObject(self, &sp_sha1SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         return string
     }
     
     public
     var sha256Sum: String {
-        if let v = objc_getAssociatedObject(self, "sha256Sum") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_sha256SumKey) as? String {
             return v
         }
         let string = self.stringForSum(.sha256)
-        objc_setAssociatedObject(self, "sha256Sum", string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        objc_setAssociatedObject(self, &sp_sha256SumKey, string, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         return string
     }
     

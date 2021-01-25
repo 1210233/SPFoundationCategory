@@ -7,6 +7,12 @@
 
 import Foundation
 
+var sp_pinyinKey = "sp_pinyinKey"
+var sp_md5SumKey = "sp_md5SumKey"
+var sp_sha1SumKey = "sp_sha1SumKey"
+var sp_sha256SumKey = "sp_sha256SumKey"
+var sp_date_stringKey = "sp_date_stringKey"
+
 public let GB_18030_2000: String.Encoding = {
     let enc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue))
     return String.Encoding(rawValue: enc)

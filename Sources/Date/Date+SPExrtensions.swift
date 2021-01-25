@@ -148,13 +148,13 @@ extension Date {
 extension Date {
     public
     var string: String {
-        if let v = objc_getAssociatedObject(self, "date_string") as? String {
+        if let v = objc_getAssociatedObject(self, &sp_date_stringKey) as? String {
             return v
         }
         
         let fmt = DateFormatter(.yyyy_MM_dd_HH_mm_ss)
         let d = fmt.string(from: self)
-        objc_setAssociatedObject(self, "date_string", d, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        objc_setAssociatedObject(self, &sp_date_stringKey, d, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         return d
     }
     
