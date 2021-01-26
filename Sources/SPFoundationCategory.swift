@@ -18,12 +18,35 @@ public let GB_18030_2000: String.Encoding = {
     return String.Encoding(rawValue: enc)
 }()
 
-@inlinable
-public func anyIsNil(_ a: Any) -> Bool {
-    switch a {
+
+/// 判断Any是否是nil. 与 value == nil 等价。
+postfix operator =?
+postfix public func =? (value: Any?) -> Bool {
+    if value == nil {
+        return true
+    }
+    switch value! {
     case Optional<Any>.none:
         return true
     default:
         return false
     }
+}
+@inlinable
+public func anyIsNil(_ a: Any) -> Bool {
+    return a=?
+}
+
+/// 判断数值是否非0.
+prefix operator !!
+prefix public func !! <T: Numeric>(value: T) -> Bool {
+    return value != 0
+}
+/// 判断可选数值是否非0.
+prefix operator !!!
+prefix public func !!! <T: Numeric>(value: T?) -> Bool {
+    if value == nil {
+        return true
+    }
+    return !!(value!)
 }
