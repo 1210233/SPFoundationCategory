@@ -412,11 +412,18 @@ extension String {
 }
 
 
-extension String {
-    public static func ?? (string: String, default:  @autoclosure () -> String) -> String {
-        if string.isEmpty {
-            return `default`()
-        }
-        return string
+/// 定义优先级组
+precedencegroup EmptyStringPrecedence {
+    lowerThan: CastingPrecedence        // 优先级, 比类型转换运算低(is, as)
+    higherThan: NilCoalescingPrecedence   // 优先级,比Nil合并运算符高(??)
+    associativity: left                 // 结合方向:left, right or none
+    assignment: false                   // true=赋值运算符,false=非赋值运算符
+}
+
+infix operator ??? : EmptyStringPrecedence
+public func ??? (optional: String?, defaultValue: @autoclosure () -> String) -> String {
+    if optional != nil, !optional!.isEmpty {
+        return optional!
     }
+    return defaultValue()
 }
