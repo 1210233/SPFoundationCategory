@@ -427,3 +427,10 @@ public func ??? (optional: String?, defaultValue: @autoclosure () -> String) -> 
     }
     return defaultValue()
 }
+
+prefix public func !!! (value: String?) -> Bool {
+    if value == nil, value!.isEmpty {
+        return true
+    }
+    return false
+}
